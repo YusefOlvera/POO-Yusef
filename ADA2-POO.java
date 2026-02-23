@@ -1,4 +1,4 @@
-package ada3;
+package ada2;
 
 // INTERFAZ PARA ELEMENTOS REPRODUCIBLES
 interface IReproducible {
@@ -103,7 +103,7 @@ class Documental extends ContenidoMultimedia {
 }
 
 // CLASE PRINCIPAL SEGUN PLANTILLA PROPORCIONADA
-public class Ada3 {
+public class Ada2 {
 
     // METODO MAIN CON LA LOGICA SOLICITADA
     public static void main(String[] args) {
@@ -143,3 +143,4 @@ public class Ada3 {
         }
     }
 }
+
