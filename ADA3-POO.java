@@ -1,24 +1,26 @@
-// SISTEMA DE GESTION STREAMCODE
+package ada3;
 
+// INTERFAZ PARA ELEMENTOS REPRODUCIBLES
 interface IReproducible {
     void reproducir();
     void pausar();
     String obtenerDetalles();
 }
 
+// CLASE ABSTRACTA BASE PARA CONTENIDO MULTIMEDIA
 abstract class ContenidoMultimedia implements IReproducible {
     protected int id;
     protected String titulo;
     protected int duracionMinutos;
 
-    // CONSTRUCTOR
+    // CONSTRUCTOR BASICO
     public ContenidoMultimedia(int id, String titulo, int duracionMinutos) {
         this.id = id;
         this.titulo = titulo;
         this.duracionMinutos = duracionMinutos;
     }
 
-    // GETTERS Y SETTERS
+    // GETTERS MINIMOS
     public int getId() {
         return id;
     }
@@ -31,19 +33,7 @@ abstract class ContenidoMultimedia implements IReproducible {
         return duracionMinutos;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
-
-    public void setDuracionMinutos(int duracionMinutos) {
-        this.duracionMinutos = duracionMinutos;
-    }
-
-    // METODO CONCRETO
+    // METODO CONCRETO PARA IMPRIMIR INFO BASICA
     public void imprimirInfoBasica() {
         System.out.println("ID " + id + " TITULO " + titulo);
     }
@@ -54,16 +44,17 @@ abstract class ContenidoMultimedia implements IReproducible {
         System.out.println("PAUSADO " + titulo);
     }
 
-    // IMPLEMENTACION DE obtenerDetalles
+    // IMPLEMENTACION POR DEFECTO DE obtenerDetalles
     @Override
     public String obtenerDetalles() {
         return "ID " + id + " TITULO " + titulo + " DURACION " + duracionMinutos + "MIN";
     }
 
-    // METODO ABSTRACTO
+    // METODO ABSTRACTO QUE CALCULA CALIDAD
     public abstract double calcularCalidad();
 }
 
+// CLASE PELICULA CON ATRIBUTO EXTRA
 class Pelicula extends ContenidoMultimedia {
     private boolean ganoOscar;
 
@@ -76,10 +67,6 @@ class Pelicula extends ContenidoMultimedia {
         return ganoOscar;
     }
 
-    public void setGanoOscar(boolean ganoOscar) {
-        this.ganoOscar = ganoOscar;
-    }
-
     @Override
     public double calcularCalidad() {
         return ganoOscar ? 10.0 : 7.0;
@@ -87,10 +74,11 @@ class Pelicula extends ContenidoMultimedia {
 
     @Override
     public void reproducir() {
-        System.out.println("PROYECTANDO PELICULA " + getTitulo());
+        System.out.println("PROYECTANDO PELICULA " + titulo);
     }
 }
 
+// CLASE DOCUMENTAL CON ATRIBUTO TEMA
 class Documental extends ContenidoMultimedia {
     private String tema;
 
@@ -103,13 +91,9 @@ class Documental extends ContenidoMultimedia {
         return tema;
     }
 
-    public void setTema(String tema) {
-        this.tema = tema;
-    }
-
     @Override
     public double calcularCalidad() {
-        return getDuracionMinutos() > 60 ? 9.0 : 6.0;
+        return duracionMinutos > 60 ? 9.0 : 6.0;
     }
 
     @Override
@@ -118,24 +102,32 @@ class Documental extends ContenidoMultimedia {
     }
 }
 
-public class Main {
+// CLASE PRINCIPAL SEGUN PLANTILLA PROPORCIONADA
+public class Ada3 {
+
+    // METODO MAIN CON LA LOGICA SOLICITADA
     public static void main(String[] args) {
-        // ARREGLO DE CONTENIDO MULTIMEDIA CAPACIDAD 5
+        // ARREGLO FIJO DE CONTENIDO MULTIMEDIA CAPACIDAD 5
         ContenidoMultimedia[] catalogo = new ContenidoMultimedia[5];
 
-        // LLENAR ARREGLO CON PELICULAS Y DOCUMENTALES
+        // RELLENAR EL ARREGLO CON INSTANCIAS MIXTAS
         catalogo[0] = new Pelicula(1, "LA AVENTURA", 120, true);
-        catalogo[1] = new Documental(2, "EL OCÉANO", 75, "Ciencia");
+        catalogo[1] = new Documental(2, "EL OCEANO", 75, "Ciencia");
         catalogo[2] = new Pelicula(3, "COMEDIA LOCAL", 95, false);
         catalogo[3] = new Documental(4, "HISTORIA REGIONAL", 50, "Historia");
         catalogo[4] = new Pelicula(5, "DRAMA INDEPENDIENTE", 110, false);
 
-        // RECORRER Y USAR POLIMORFISMO
+        // RECORRER EL ARREGLO Y USAR POLIMORFISMO
         for (ContenidoMultimedia item : catalogo) {
             if (item == null) continue;
+
+            // REPRODUCIR SEGUN TIPO
             item.reproducir();
+
+            // CALCULAR Y MOSTRAR CALIDAD
             double calidad = item.calcularCalidad();
             System.out.println(item.obtenerDetalles() + " CALIDAD " + calidad);
+
             // USO DE instanceof PARA ACCEDER A ATRIBUTOS ESPECIFICOS
             if (item instanceof Pelicula) {
                 Pelicula p = (Pelicula) item;
@@ -144,6 +136,8 @@ public class Main {
                 Documental d = (Documental) item;
                 System.out.println("TEMA DOCUMENTAL " + d.getTema());
             }
+
+            // PAUSAR Y SEPARADOR
             item.pausar();
             System.out.println("-----");
         }
